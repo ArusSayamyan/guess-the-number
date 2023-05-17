@@ -4,7 +4,7 @@ body {
 }
 
 .gameWrapper {
-  max-width: 300px;
+  max-width: 350px;
   width: 100%;
   padding: 15px;
   margin: 0 auto;
@@ -45,6 +45,7 @@ body {
 
   &__title, &__desc {
     text-align: center;
+    margin-top: 0;
   }
 
   &__item {
@@ -53,6 +54,8 @@ body {
     height: 36px;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
 
     &:nth-child(2n) {
       background: #fff;
@@ -73,6 +76,7 @@ body {
     border: none;
     box-sizing: border-box;
     border-radius: 8px;
+    outline: none;
   }
 
   &__btn {
