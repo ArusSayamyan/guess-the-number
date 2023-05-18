@@ -25,8 +25,9 @@
       <li class="gameWrapper__item"></li>
       <li class="gameWrapper__item"></li>
     </ul>
-    <div v-if="isWinner">
-      <p>You won! The secret number is {{ secretNumber }}</p>
+    <div v-if="isWinner || gameOver">
+      <p v-if="isWinner">You won! The secret number is {{ secretNumber }}</p>
+      <p v-else-if="gameOver">Game over. The secret number was {{ secretNumber }}</p>
       <button @click="playAgain">play again</button>
     </div>
     <div v-else>
@@ -56,6 +57,7 @@ const enteredNumber = ref()
 const goods = ref(0)
 const correct = ref(0)
 const isWinner = ref(false)
+const gameOver = ref(false)
 
 const secretNumber = computed(()=> {
     let digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -91,6 +93,8 @@ function submitForm() {
       })
       if(correct.value === 4) {
         isWinner.value = true;
+      }else if(i === items.length - 1) {
+        gameOver.value = true;
       }
       items[i].textContent = enteredNumber.value + ' ' + goods.value + ' ' +   correct.value
       correct.value = 0;
