@@ -1,7 +1,7 @@
 <template>
   <div class="gameWrapper">
     <h1 class="gameWrapper__title">
-      Guess the 4-digit number
+      Guess the 4-digit number  {{ secretNumber }}
     </h1>
     <p class="gameWrapper__desc"> Try to guess the secret 4-digit number with unique digits from 1 to 9. </p>
     <div class="gameWrapper__sections">
@@ -25,30 +25,52 @@
       <li class="gameWrapper__item"></li>
       <li class="gameWrapper__item"></li>
     </ul>
-    <form class="gameWrapper__setNumber" @submit.prevent="submitForm">
-      <input type="text" class="gameWrapper__enterNumber" required placeholder="Enter your guess" maxlength="4" minlength="4" pattern="^(?!.*(.).*\1)[1-9]{1,4}$" v-model="enteredNumber">
-      <button class="gameWrapper__btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 2L11 13"></path>
-          <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
-        </svg>
+    <div v-if="isWinner">
+      <p>You won! The secret number is {{ secretNumber }}</p>
+      <button @click="playAgain">play again</button>
+    </div>
+    <div v-else>
+      <form class="gameWrapper__setNumber" @submit.prevent="submitForm">
+        <input type="text" class="gameWrapper__enterNumber" required placeholder="Enter your guess" maxlength="4" minlength="4" pattern="^(?!.*(.).*\1)[1-9]{1,4}$" v-model="enteredNumber">
+        <button class="gameWrapper__btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 2L11 13"></path>
+            <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+          </svg>
+        </button>
+      </form>
+      <button class="gameWrapper__reset" @click="resetNumbers">
+        Reset
       </button>
-    </form>
-    <button class="gameWrapper__reset" @click="resetNumbers">
-      Reset
-    </button>
+    </div>
+
   </div>
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
 const isShownModal = ref(false)
 const isShownRules = ref(false)
 const enteredNumber = ref()
-const secretNumber = 1584;
 const goods = ref(0)
 const correct = ref(0)
+const isWinner = ref(false)
+
+const secretNumber = computed(()=> {
+    let digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    let result = '';
+    let num = 0;
+
+    while (num < 4) {
+      let index = Math.floor(Math.random() * digits.length);
+      result += digits[index];
+      digits.splice(index, 1);
+      num++;
+    }
+
+    return result;
+})
 
 //add guessed number
 function submitForm() {
@@ -56,7 +78,7 @@ function submitForm() {
   for(let i = 0; i < items.length; i++) {
     if(!items[i].textContent) {
       let entered = enteredNumber.value.split('')
-      let sec = secretNumber.toString().split('')
+      let sec = secretNumber.value.toString().split('')
       entered.forEach((item, idx) => {
         sec.forEach((num, i) => {
           if(item === num && idx === i) {
@@ -67,10 +89,13 @@ function submitForm() {
           }
         })
       })
-      items[i].textContent = enteredNumber.value + ' ' + correct.value + ' ' +   goods.value
+      if(correct.value === 4) {
+        isWinner.value = true;
+      }
+      items[i].textContent = enteredNumber.value + ' ' + goods.value + ' ' +   correct.value
       correct.value = 0;
       goods.value = 0
-
+      enteredNumber.value = '';
       return;
     }
   }
@@ -80,8 +105,15 @@ function submitForm() {
 function resetNumbers() {
   let items = document.querySelectorAll('.gameWrapper__item');
   for(let item of items) {
-    item.textContent = null;
+    item.textContent = '';
   }
+  isWinner.value =false;
+}
+
+//play again
+function playAgain() {
+  location.reload();
+  return false;
 }
 </script>
 
