@@ -59,6 +59,7 @@ const correct = ref(0)
 const isWinner = ref(false)
 const gameOver = ref(false)
 
+//randomly generated secret number
 const secretNumber = computed(()=> {
     let digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let result = '';
@@ -105,6 +106,7 @@ function submitForm() {
   }
 }
 
+
 //reset all values
 function resetNumbers() {
   let items = document.querySelectorAll('.gameWrapper__item');
@@ -113,6 +115,7 @@ function resetNumbers() {
   }
   isWinner.value =false;
 }
+
 
 //play again
 function playAgain() {
