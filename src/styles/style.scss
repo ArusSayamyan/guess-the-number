@@ -107,4 +107,28 @@ body {
     right: 0;
   }
 
+  &__winn {
+    background-color: #0080002b;
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  &__gameOver {
+    background-color: #f8d7da;
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  &__message {
+    margin: 10px 0;
+  }
+
+  &__playAgainBtn {
+    padding: 8px 5px;
+    font-size: 15px;
+    border-radius: 5px;
+    background: none;
+    color: #5b5353;
+  }
+
 }
