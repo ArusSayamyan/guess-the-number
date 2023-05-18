@@ -25,10 +25,10 @@
       <li class="gameWrapper__item"></li>
       <li class="gameWrapper__item"></li>
     </ul>
-    <div v-if="isWinner || gameOver">
-      <p v-if="isWinner">You won! The secret number is {{ secretNumber }}</p>
-      <p v-else-if="gameOver">Game over. The secret number was {{ secretNumber }}</p>
-      <button @click="playAgain">play again</button>
+    <div v-if="isWinner || gameOver" :class="isWinner ? 'gameWrapper__winn' : 'gameWrapper__gameOver'">
+      <p v-if="isWinner" class="gameWrapper__message">You won! The secret number is {{ secretNumber }}</p>
+      <p v-else-if="gameOver" class="gameWrapper__message">Game over. The secret number was {{ secretNumber }}</p>
+      <button @click="playAgain" class="gameWrapper__playAgainBtn">play again</button>
     </div>
     <div v-else>
       <form class="gameWrapper__setNumber" @submit.prevent="submitForm">
